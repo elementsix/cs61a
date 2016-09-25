@@ -25,4 +25,6 @@ CREATE TABLE IF NOT EXISTS frequencies AS
 -- The number of occurrences of the word-category pair should be greater than 10
 CREATE TABLE likeliest_child AS
     -- REPLACE THIS LINE
-    select 'YOUR CODE HERE';
+    select word, category, dependency_type, dependent_category, max(frequency) as max_frequency
+           from frequencies where dependent_category <> 'F' group by word, category
+           having count(*) > 10 and frequency > 0.5;
