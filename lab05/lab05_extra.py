@@ -6,6 +6,9 @@ from lab05 import *
 # Trees #
 #########
 
+from functools import reduce
+import random
+
 # Q5
 def height(t):
     """Return the depth of the deepest node in the tree.
@@ -27,6 +30,11 @@ def height(t):
     """
     "*** YOUR CODE HERE ***"
 
+    if is_leaf(t):
+        return 0
+    else:
+        return 1 + max([height(b) for b in branches(t)])
+
 
 # Q6
 def acorn_finder(t):
@@ -40,6 +48,12 @@ def acorn_finder(t):
     False
     """
     "*** YOUR CODE HERE ***"
+    if not t:
+        return False
+    elif root(t) == "acorn":
+        return True
+    else:
+        return reduce(lambda x, y: x or y, [acorn_finder(b) for b in branches(t)], False)
 
 # Q7
 def preorder(t):
@@ -52,6 +66,21 @@ def preorder(t):
     [2, 4, 6]
     """
     "*** YOUR CODE HERE ***"
+
+    def preorder_traverse(tr, preorder_list):
+
+        if not tr:
+            return preorder_list
+
+        preorder_list.append(root(tr))
+
+        for b in branches(tr):
+            preorder_traverse(b, preorder_list)
+
+        return preorder_list
+
+    preorder_list = []
+    return preorder_traverse(t, preorder_list)
 
 ################
 # Dictionaries #
@@ -78,6 +107,9 @@ def build_successors_table(tokens):
     for word in tokens:
         if prev not in table:
             "*** YOUR CODE HERE ***"
+            table[prev] = [word]
+        else:
+            table[prev].append(word)
         "*** YOUR CODE HERE ***"
         prev = word
     return table
@@ -91,6 +123,9 @@ def construct_sent(word, table):
     result = ' '
     while word not in ['.', '!', '?']:
         "*** YOUR CODE HERE ***"
+        result += word + ' '
+        word = random.choice(table[word])
+
     return result + word
 
 # Warning: do NOT try to print the return result of this function
@@ -105,8 +140,8 @@ def shakespeare_tokens(path='shakespeare.txt', url='http://goo.gl/SztLfX'):
         return shakespeare.read().decode(encoding='ascii').split()
 
 # Uncomment the following two lines
-# tokens = shakespeare_tokens()
-# table = build_successors_table(tokens)
+tokens = shakespeare_tokens()
+table = build_successors_table(tokens)
 
 def random_sent():
     import random

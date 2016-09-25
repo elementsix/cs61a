@@ -5,6 +5,8 @@
 #########
 
 import inspect
+from functools import reduce
+
 # Tree definition - same Data Abstraction but different implementation from lecture
 def tree(root, branches=[]):
     #for branch in branches:
@@ -123,8 +125,3 @@ def counter(message):
         word_dict[word] += 1
 
     return word_dict
-
-
-
-
-
