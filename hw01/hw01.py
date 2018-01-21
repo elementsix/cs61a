@@ -105,3 +105,6 @@ def hailstone(n):
         return hailstone_count
 
 
+challenge_question_program = """
+s = print('s = ' + repr(s) + ';eval(s)');eval(s)
+"""
